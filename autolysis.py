@@ -1,3 +1,4 @@
+HEAD
 # -*- coding: utf-8 -*-
 """autolysis.ipynb
 
@@ -7,6 +8,8 @@ Original file is located at
     https://colab.research.google.com/drive/1VPuy2sW_vERxe5G4L29QQugrZ2RvoZ_j
 """
 
+
+ 66b90e226a031ea87ffba81450ddb5a48b4985df
 import os
 import pandas as pd
 import seaborn as sns
@@ -46,16 +49,27 @@ def analyze_data(df):
 def visualize_data(df, output_prefix):
     """Generate visualizations for the dataset."""
     charts = []
+ HEAD
 
+
+    
+ 66b90e226a031ea87ffba81450ddb5a48b4985df
     # Example 1: Correlation Heatmap (if numeric data exists)
     numeric_columns = df.select_dtypes(include=["number"]).columns
     if len(numeric_columns) > 0:
         plt.figure(figsize=(14, 12))  # Increased figure size for clarity
-        heatmap = sns.heatmap(
+        heatmap = sns.heatmap
+ HEAD
             df[numeric_columns].corr(),
             annot=True,
             cmap="coolwarm",
             fmt=".2f",
+
+            df[numeric_columns].corr(), 
+            annot=True, 
+            cmap="coolwarm", 
+            fmt=".2f", 
+ 66b90e226a031ea87ffba81450ddb5a48b4985df
             cbar_kws={'shrink': 0.8}
         )
         heatmap.set_title("Correlation Heatmap", fontsize=16, pad=20)
@@ -133,7 +147,18 @@ def main():
     except Exception as e:
         print(f"Error accessing folder {folder_path}: {e}")
         return
+    
+    # Automatically process all CSV files in the folder
+    csv_files = [f for f in os.listdir() if f.endswith('.csv')]
+    
+    if not csv_files:
+        print("No CSV files found in the directory.")
+        return
+    
+    for filename in csv_files:
+        print(f"Processing {filename}...")
 
+ HEAD
     # Automatically process all CSV files in the folder
     csv_files = [f for f in os.listdir() if f.endswith('.csv')]
 
@@ -157,6 +182,21 @@ def main():
         # Narrate story
         story = narrate_story(analysis, charts, filename)
 
+
+        # Load dataset
+        df = read_csv(filename)
+        
+        # Analyze dataset
+        analysis = analyze_data(df)
+        
+        # Visualize data
+        output_prefix = filename.split(".")[0]
+        charts = visualize_data(df, output_prefix)
+        
+        # Narrate story
+        story = narrate_story(analysis, charts, filename)
+        
+ 66b90e226a031ea87ffba81450ddb5a48b4985df
         # Save README.md
         readme_file = f"README_{output_prefix}.md"
         save_markdown(story, charts, readme_file)
